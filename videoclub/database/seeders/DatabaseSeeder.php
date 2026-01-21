@@ -183,7 +183,9 @@ class DatabaseSeeder extends Seeder
     {
         //\App\Models\User :: factory(10)->create();
         self::seedCatalog();
+        self::seedUsers();
         $this->command->info('Tabla catálogo inicializada con datos!');
+        $this->command->info('Tabla users inicializada con datos!');
     }
 
     //Función que rellena los campos
@@ -192,7 +194,7 @@ class DatabaseSeeder extends Seeder
         //Elimiina todos los registros de la tabla (no reinicia el auto-increment)
         $deleted = Movie::query()->delete();
 
-        print('se han eliminado' . $deleted . 'registros');
+        $this->command->info('se han eliminado' . $deleted . 'registros');
 
         //Recorre el array para sacar su contenido y asignarlo a los registros de la tabla en la bbdd
         foreach ($this->arrayPeliculas as $pelicula) {
@@ -204,6 +206,21 @@ class DatabaseSeeder extends Seeder
             $p->rented = $pelicula['rented'];
             $p->synopsis = $pelicula['synopsis'];
             $p->save(); //Guarda los datos asignados
+        }
+    }
+
+    function seedUsers()
+    {
+
+        $deleted = User::query()->delete();
+        $this->command->info('se han eliminado' . $deleted . 'registros');
+
+        for ($i = 0; $i < 2; $i++) {
+            $usuario = new User;
+            $usuario->name = 'usuario' . $i;
+            $usuario->email = 'usuario' . $i . '@gmail.com';
+            $usuario->password = bcrypt('123');
+            $usuario->save();
         }
     }
 }
