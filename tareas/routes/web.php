@@ -8,26 +8,30 @@ use Illuminate\Support\Facades\Route;
 
 use Illuminate\Support\Facades\Auth;
 
-Route::middleware('auth')->group(function () {
+//Ruta raíz: redirige según rol
+Route::get('/', function () {
     $user = Auth::user();
+
     if ($user && $user->name === 'admin') {
-        return redirect('/index');
+        return redirect('/index'); // admin
     }
-    return view('user.index');
+
+    return redirect('/user/index'); // usuario normal
 })->middleware('auth');
 
 
-
-
 Route::middleware('auth')->group(function () {
-
+    //Rutas de user
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+
     Route::get('/user/index', [TareasController::class, 'getIndexUser']);
     Route::get('/user/show/{id}', [TareasController::class, 'showTareaUser']);
 
+
+    //Rutas de admin
     Route::middleware('admin')->group(function () {
 
         Route::get('/', [HomeController::class, 'getHome']);

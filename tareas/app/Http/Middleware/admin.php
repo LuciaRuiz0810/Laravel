@@ -17,7 +17,7 @@ class admin
     {
         $user = $request->user();
 
-        //si no hay usuario o no se llama "admin"
+        //si no hay usuario o no se llama "admin" irá al index de users
         if (!$user || $user->name !== 'admin') {
             return redirect('user/index');
         }
