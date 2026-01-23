@@ -14,6 +14,12 @@ class TareasController extends Controller
         return view('tareas.index', compact('array_listado_tareas'));
     }
 
+     public function getIndexUser()
+    {
+        $array_listado_tareas = Tarea::all();
+        return view('user.index', compact('array_listado_tareas'));
+    }
+
 
     public function createTareaForm()
     {
@@ -109,6 +115,13 @@ class TareasController extends Controller
         $tarea = Tarea::findOrFail($id);
 
         return view('tareas.show', compact('tarea'));
+    }
+
+    public function showTareaUser($id){
+
+        $tarea = Tarea::findOrFail($id);
+
+        return view('user.show', compact('tarea'));
     }
 
 }
