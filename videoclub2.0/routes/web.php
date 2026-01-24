@@ -1,0 +1,43 @@
+<?php
+
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MoviesController;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Middleware\Admin;
+use App\Http\Controllers\UserController;
+
+
+
+Route::middleware('auth')->group(function () { //Grupo de rutas a las que puede acceder el admin y usuarios normales
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+     Route::redirect('', '/login'); //Redirige de /dashboard a /index
+    Route::redirect('/dashboard', '/index'); //Redirige de /dashboard a /index
+    Route::get('/index', [MoviesController::class, 'getIndex']);
+
+    Route::get('/movie/show/{id}', [MoviesController::class, 'showMovie']);
+
+    Route::put('/rent/movie/{id}', [UserController::class, 'alquilarPelicula']);
+    Route::put('/return/movie/{id}', [UserController::class, 'devolverPelicula']);
+
+    Route::middleware([Admin::class])->group(function () { //Grupo de rutas a las que solo puede acceder el Admin
+
+        Route::get('/create/movie', [MoviesController::class, 'createMovieForm']);
+        Route::post('/create/movie/new', [MoviesController::class, 'createMovie']);
+
+        Route::get('/edit/movie/{id}', [MoviesController::class, 'editMovieForm']);
+        Route::put('/edit/movie/{id}/new', [MoviesController::class, 'editMovie']);
+
+        Route::delete('/delete/movie/{id}', [MoviesController::class, 'delete']);
+
+        Route::get('/user', [UserController::class, 'listadoUsers']);
+
+    });
+});
+
+require __DIR__ . '/auth.php';
