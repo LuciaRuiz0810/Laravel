@@ -92,8 +92,6 @@ class UserController extends Controller
             $user->RentedMovies = $peliculas;
             $user->save();
 
-
-
             return redirect("/movie/show/$pelicula->id")->with('success', 'Película alquilada correctamente!');
         } catch (Exception $e) {
             dd($e->getMessage());

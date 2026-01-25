@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Movie;
 use App\Models\User;
+use App\Models\Director;
 use App\Models\videoclub_dos;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -180,12 +180,136 @@ class DatabaseSeeder extends Seeder
         )
     );
 
+    private $directors = [
+        [
+            'name' => 'Christopher Nolan',
+            'birth_date' => '1970-07-30',
+            'nationality' => 'British-American',
+            'biography' => 'Christopher Edward Nolan CBE is a British-American film director, producer, and screenwriter. His films have grossed more than $5 billion worldwide, and have garnered 11 Academy Awards from 36 nominations.',
+        ],
+        [
+            'name' => 'Quentin Tarantino',
+            'birth_date' => '1963-03-27',
+            'nationality' => 'American',
+            'biography' => 'Quentin Jerome Tarantino is an American film director, screenwriter, producer, and actor. His films are characterized by nonlinear storylines, satirical subject matter, aestheticization of violence, extended scenes of dialogue, ensemble casts, references to popular culture and a wide variety of other films, soundtracks primarily containing songs and score pieces from the 1960s to the 1980s, and features of neo-noir film.',
+        ],
+        [
+            'name' => 'Martin Scorsese',
+            'birth_date' => '1942-11-17',
+            'nationality' => 'American',
+            'biography' => 'Martin Charles Scorsese is an American film director, producer, screenwriter, and actor. One of the major figures of the New Hollywood era, he is widely regarded as one of the greatest and most influential directors in film history. His films, most of which are dramas, are known for their violence, profanity, and Catholic themes and references.',
+        ],
+        [
+            'name' => 'Steven Spielberg',
+            'birth_date' => '1946-12-18',
+            'nationality' => 'American',
+            'biography' => 'Steven Allan Spielberg is an American film director, producer, and screenwriter. A major figure of the New Hollywood era and pioneer of the modern blockbuster, Spielberg is the most commercially successful director of all time.',
+        ],
+        [
+            'name' => 'Hayao Miyazaki',
+            'birth_date' => '1941-01-05',
+            'nationality' => 'Japanese',
+            'biography' => 'Hayao Miyazaki is a Japanese animator, director, producer, screenwriter, author, and manga artist. A co-founder of Studio Ghibli, he has attained international acclaim as a masterful storyteller and creator of Japanese animated feature films, and is widely regarded as one of the most accomplished filmmakers in the history of animation.',
+        ],
+        [
+            'name' => 'Alfred Hitchcock',
+            'birth_date' => '1899-08-13',
+            'nationality' => 'British',
+            'biography' => 'Sir Alfred Joseph Hitchcock KBE was an English film director, producer, and screenwriter. He is one of the most influential and widely studied filmmakers in the history of cinema. Known as the "Master of Suspense", he directed over 50 feature films in a career spanning six decades.',
+        ],
+        [
+            'name' => 'James Cameron',
+            'birth_date' => '1954-08-16',
+            'nationality' => 'Canadian',
+            'biography' => 'James Francis Cameron CC is a Canadian film director, screenwriter, and producer. A major figure in the post-New Hollywood era, he is considered one of the industry\'s most innovative filmmakers, regularly pushing the boundaries of cinematic capability with his use of novel technologies.',
+        ],
+        [
+            'name' => 'Tim Burton',
+            'birth_date' => '1958-08-25',
+            'nationality' => 'American',
+            'biography' => 'Timothy Walter Burton is an American film director, producer, artist, writer, and animator. He is known for his gothic fantasy and horror films such as Beetlejuice, Edward Scissorhands, The Nightmare Before Christmas, Ed Wood, Sleepy Hollow, Corpse Bride, Sweeney Todd: The Demon Barber of Fleet Street, and Dark Shadows.',
+        ],
+        [
+            'name' => 'Pedro Almodóvar',
+            'birth_date' => '1949-09-25',
+            'nationality' => 'Spanish',
+            'biography' => 'Pedro Almodóvar Caballero is a Spanish film director, screenwriter, and producer. He came to prominence as a film director during La Movida Madrileña, a cultural renaissance that followed the end of Francoist Spain. His films are known for their complex narratives, and they often depict strong women and transgender characters.',
+        ],
+        [
+            'name' => 'Denis Villeneuve',
+            'birth_date' => '1967-10-03',
+            'nationality' => 'Canadian',
+            'biography' => 'Denis Villeneuve OC CQ is a Canadian film director, writer, and producer. He is a four-time recipient of the Canadian Screen Award for Best Direction, for Maelström in 2001, Polytechnique in 2009, Incendies in 2011 and Enemy in 2013.',
+        ],
+        [
+            'name' => 'Guillermo del Toro',
+            'birth_date' => '1964-10-09',
+            'nationality' => 'Mexican',
+            'biography' => 'Guillermo del Toro Gómez is a Mexican filmmaker and author. A recipient of three Academy Awards, three BAFTA Awards, and an Emmy Award, his work has been characterized by a strong connection to fairy tales and horror, with an effort to infuse visual or poetic beauty in the grotesque.',
+        ],
+        [
+            'name' => 'Akira Kurosawa',
+            'birth_date' => '1910-03-23',
+            'nationality' => 'Japanese',
+            'biography' => 'Akira Kurosawa was a Japanese filmmaker and painter who directed 30 films in a career spanning 57 years. He is regarded as one of the most important and influential filmmakers in the history of cinema. Kurosawa displayed a bold, dynamic style, strongly influenced by Western cinema yet distinct from it.',
+        ],
+        [
+            'name' => 'Stanley Kubrick',
+            'birth_date' => '1928-07-26',
+            'nationality' => 'American',
+            'biography' => 'Stanley Kubrick was an American film director, producer, screenwriter, and photographer. Widely considered one of the greatest filmmakers of all time, his films, almost all of which are adaptations of novels or short stories, cover a wide range of genres and are noted for their realism, dark humor, unique cinematography, extensive set designs, and evocative use of music.',
+        ],
+        [
+            'name' => 'Francis Ford Coppola',
+            'birth_date' => '1939-04-07',
+            'nationality' => 'American',
+            'biography' => 'Francis Ford Coppola is an American film director, producer, and screenwriter. He was a central figure in the New Hollywood filmmaking movement of the 1960s and 1970s, and is widely considered one of the greatest filmmakers of all time. He is best known for directing The Godfather trilogy and Apocalypse Now.',
+        ],
+        [
+            'name' => 'Ridley Scott',
+            'birth_date' => '1937-11-30',
+            'nationality' => 'British',
+            'biography' => 'Sir Ridley Scott is a British film director and producer. Following his commercial breakthrough with Alien (1979), his best-known works are the neo-noir dystopian science fiction film Blade Runner (1982), road adventure film Thelma & Louise (1991), historical drama Gladiator (2000), and science fiction film The Martian (2015).',
+        ],
+        [
+            'name' => 'David Fincher',
+            'birth_date' => '1962-08-28',
+            'nationality' => 'American',
+            'biography' => 'David Andrew Leo Fincher is an American film director. Known for his psychological thrillers, his films have received 40 nominations at the Academy Awards, including three for him as Best Director. He also won the Emmy Award for Outstanding Directing for a Drama Series in 2013 for House of Cards.',
+        ],
+        [
+            'name' => 'Wes Anderson',
+            'birth_date' => '1969-05-01',
+            'nationality' => 'American',
+            'biography' => 'Wesley Wales Anderson is an American filmmaker. His films are known for their symmetry, eccentricity and distinctive visual and narrative styles. He was nominated for the Academy Award for Best Original Screenplay for The Royal Tenenbaums (2001), Moonrise Kingdom (2012), and The Grand Budapest Hotel (2014).',
+        ],
+        [
+            'name' => 'George Lucas',
+            'birth_date' => '1944-05-14',
+            'nationality' => 'American',
+            'biography' => 'George Walton Lucas Jr. is an American film director, producer, screenwriter, and entrepreneur. Lucas is best known for creating the Star Wars and Indiana Jones franchises and founding Lucasfilm, LucasArts, and Industrial Light & Magic.',
+        ],
+        [
+            'name' => 'John Lasseter',
+            'birth_date' => '1957-01-12',
+            'nationality' => 'American',
+            'biography' => 'John Alan Lasseter is an American film director, producer, screenwriter, animator, and voice actor. He is the head of animation at Skydance Animation. He was previously the chief creative officer of Pixar Animation Studios, Walt Disney Animation Studios, and Disneytoon Studios.',
+        ],
+        [
+            'name' => 'Clint Eastwood',
+            'birth_date' => '1930-05-31',
+            'nationality' => 'American',
+            'biography' => 'Clinton Eastwood Jr. is an American actor, filmmaker, musician, and politician. After achieving success in the Western TV series Rawhide, he rose to international fame as the "Man with No Name" in Sergio Leone\'s Dollars Trilogy of spaghetti Westerns during the 1960s, and as antihero cop Harry Callahan in the five Dirty Harry films throughout the 1970s and 1980s.',
+        ],
+    ];
+
     public function run(): void
     {
         // User::factory(10)->create();
 
         $this->moviesSeed();
         $this->usersSeed();
+        $this->directorsSeed();
     }
 
     public function moviesSeed()
@@ -195,14 +319,33 @@ class DatabaseSeeder extends Seeder
 
         $this->command->info('Se han eliminado' . $pelicula . 'registros');
 
-        foreach ($this->arrayPeliculas as $peli) {
-            $p = new videoclub_dos;
-            $p->title = $peli['title'];
-            $p->year = $peli['year'];
-            $p->director = $peli['director'];
-            $p->poster = $peli['poster'];
-            $p->synopsis = $peli['synopsis'];
+        foreach ($this->arrayPeliculas as $pelicula) {
+            $p = new videoclub_dos();
+            $p->title = $pelicula['title'];
+            $p->year = $pelicula['year'];
+            $p->director = $pelicula['director'];
+            $p->poster = $pelicula['poster'];
+            $p->rented = $pelicula['rented'];
+            $p->synopsis = $pelicula['synopsis'];
             $p->save();
+        }
+
+        $this->command->info('Registros introducidos de nuevo!');
+    }
+
+    public function directorsSeed()
+    {
+
+        $director =  Director::query()->delete();
+        $this->command->info('Se han eliminado' . $director . 'registros');
+
+        foreach ($this->directors as $director) {
+            $d = new Director();
+            $d->name = $director['name'];
+            $d->birth_date = $director['birth_date'];
+            $d->nationality = $director['nationality'];
+            $d->biography = $director['biography'];
+            $d->save();
         }
 
         $this->command->info('Registros introducidos de nuevo!');
@@ -223,7 +366,7 @@ class DatabaseSeeder extends Seeder
             $user_nuevo->name = ('user' . $i);
             $user_nuevo->email = ('user' . $i . '@gmail.com');
             $user_nuevo->password = bcrypt('password');
-            $user_nuevo->role = (false);
+            $user_nuevo->role = (false); //Revisar porque no funciona bien la contraseña
             $user_nuevo->save();
         }
 

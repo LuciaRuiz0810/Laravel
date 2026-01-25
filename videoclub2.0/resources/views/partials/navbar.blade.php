@@ -161,6 +161,11 @@
                         Gestión Usuarios
                     </a>
                 </li>
+                 <li class="nav-item {{  Request::is('/directors') ? 'active' : ''}}">
+                    <a class="nav-link" href="{{url('/directors')}}">
+                        Gestión Directores
+                    </a>
+                </li>
                 @endif
                 @endauth
             </ul>

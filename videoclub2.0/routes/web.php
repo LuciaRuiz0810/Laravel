@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\Admin;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DirectorController;
 
 
 
@@ -42,6 +43,12 @@ Route::middleware('auth')->group(function () { //Grupo de rutas a las que puede 
         Route::put('/edit/user/{id}/new', [UserController::class, 'editUser']);
 
         Route::delete('/delete/user/{id}', [UserController::class, 'delete']);
+
+        Route::get('/directors', [DirectorController::class, 'getIndex']);
+
+        Route::put('/director/edit/{id}/new', [DirectorController::class, 'editDirector']);
+        Route::get('/director/edit/{id}', [DirectorController::class, 'editDirectorForm']);
+        Route::delete('/actors/image/{id}', [DirectorController::class, 'delete']);
     });
 });
 
