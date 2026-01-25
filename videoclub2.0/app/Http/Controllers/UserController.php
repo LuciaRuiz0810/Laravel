@@ -10,13 +10,67 @@ use Exception;
 class UserController extends Controller
 {
 
+    //Lista todos los usuarios de la bbdd
+    function listadoUsers()
+    {
 
-    function listadoUsers(){
-
-    $users = User::all();
-    return view('admin.user', compact('users'));
-
+        $users = User::all();
+        return view('admin.user', compact('users'));
     }
+
+    //Formulario para editar al user
+    function editUserForm($id)
+    {
+        $user = User::findOrFail($id);
+        return view('user.edit', compact('user'));
+    }
+
+    //Procesamiento de datos del edit
+    function editUser($id, Request $request)
+    {
+        //Se validan todos los campos (para que estén rellenos y cumplan con las condiciones, por ejemplo que sea un email)
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'role' => 'required',
+        ], [
+            'name.required' => 'El Nombre es obligatorio',
+            'email.required' => 'El email es obligatorio',
+            'email.unique' => 'Este correo electrónico ya está registrado por otro usuario.',
+            'email.email' => 'Debe ingresar un correo electrónico válido.',
+            'role.required' => 'El role es obligatorio'
+        ]);
+
+
+        try {
+            //Se busca el usuario con ese id
+            $user = User::findOrfail($id);
+
+            $user->update($validated); //Actualiza el registro con los nuevos valores validados
+
+            //Redirige con mensaje de éxito a index
+            return redirect('/user')->with('success', 'Usuario editado correctamente!');
+        } catch (Exception) {
+            return redirect()->back() //Devuelve a la página anterior
+                ->with('error', 'Error al editar el usuario'); //Se envía con un mensaje de error
+        }
+    }
+
+    //Eliminar un usuario
+    public function delete($id)
+    {
+        try {
+            $user = User::findOrFail($id);
+            $user->delete();
+
+            //Redirige con mensaje de éxito
+            return redirect("/user")->with('success', 'Usuario eliminado correctamente!');
+        } catch (Exception) {
+            return redirect()->back() //Devuelve a la página anterior
+                ->with('error', 'Error al eliminar el usuario'); //Se envía con un mensaje de error
+        }
+    }
+
     //Se alquila la pelicula asignando el usuario y cambiando rented a true
     function alquilarPelicula($id_peli, Request $request)
     {
