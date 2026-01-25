@@ -9,7 +9,7 @@
     .form-card {
         background: white;
         border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         overflow: hidden;
         border: none;
     }
@@ -33,24 +33,25 @@
         font-weight: 500;
         animation: slideDown 0.3s ease-out;
     }
-    
+
     .alert-success {
         background-color: #d4edda;
         color: #155724;
         border: 1px solid #c3e6cb;
     }
-    
+
     .alert-error {
         background-color: #f8d7da;
         color: #721c24;
         border: 1px solid #f5c6cb;
     }
-    
+
     @keyframes slideDown {
         from {
             opacity: 0;
             transform: translateY(-10px);
         }
+
         to {
             opacity: 1;
             transform: translateY(0);
@@ -200,6 +201,7 @@
             opacity: 0;
             transform: translateY(30px);
         }
+
         to {
             opacity: 1;
             transform: translateY(0);
@@ -213,7 +215,7 @@
             <div class="card-header text-center">
                 Añadir Película
             </div>
-            
+
             <!-- mensajes de éxito o error después de realizar la creación-->
             @if(session('success'))
             <div class="alert-message alert-success">{{ session('success') }}</div>
@@ -222,10 +224,10 @@
             @if(session('error'))
             <div class="alert-message alert-error">{{ session('error') }}</div>
             @endif
-            
+
             <div class="card-body" style="padding:30px">
 
-                <form action="/create/movie/new" method="POST">
+                <form action="/create/movie/new" method="POST" enctype="multipart/form-data" >
 
                     <input type="hidden" name="_token" value="{{ csrf_token() }}" />
 
@@ -234,7 +236,7 @@
                         <input type="text" name="title" id="title" class="form-control" value="{{ old('title') }}">
                         @error('title')<span class="error-message">{{ $message }}</span>@enderror
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="year">Año</label>
                         <input type="text" name="year" id="year" class="form-control" value="{{ old('year') }}">
@@ -248,8 +250,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="poster">URL de la Imagen</label>
-                        <input type="text" name="poster" id="poster" class="form-control" value="{{ old('poster') }}">
+                        <label for="poster">Imagen</label>
+                        <input type="file" name="poster" id="poster" class="form-control" accept="image/*">
                         @error('poster')<span class="error-message">{{ $message }}</span>@enderror
                     </div>
 

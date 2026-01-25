@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->year('year', 8);
             $table->string('director', 64);
-            $table->string('poster')->nullable();
+            $table->string('poster')->nullable(); //Permite que la pelicula no tenga imagen 
             $table->boolean('rented')->default(false);
             $table->text('synopsis');
             //Clave fóranea para asignar películas a usuarios

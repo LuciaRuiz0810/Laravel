@@ -80,12 +80,13 @@ class UserController extends Controller
 
             $pelicula = videoclub_dos::findOrFail($id_peli);
 
+            //Actualiza la pelicula añadiendo el usaurio
             $pelicula->update([
                 'id_usuario' => $user->id,
                 'rented' => true
             ]);
 
-
+            //Se añade el id de la pelicula al array de usuarios RentedMovies
             $peliculas = $user->RentedMovies ?? [];
             $peliculas[] = $pelicula->id;
             $user->RentedMovies = $peliculas;

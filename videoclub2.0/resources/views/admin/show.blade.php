@@ -241,7 +241,7 @@
 <div class="movie-detail-container">
     <div class="row">
         <div class="col-sm-4 poster-column">
-            <img width=80% src="{{ $movies->poster }}" alt="{{ $movies->title }}">
+            <img src="{{ asset('storage/' . $movies->poster) }}" alt="{{ $movies->title }}">
         </div>
         <div class="col-sm-8 info-column">
             <h3>{{ $movies->title }}</h3>
