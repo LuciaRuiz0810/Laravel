@@ -8,27 +8,28 @@
         border-radius: 8px;
         margin-bottom: 25px;
         font-weight: 500;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         animation: slideDown 0.3s ease-out;
     }
-    
+
     .alert-success {
         background-color: #d4edda;
         color: #155724;
         border: 1px solid #c3e6cb;
     }
-    
+
     .alert-error {
         background-color: #f8d7da;
         color: #721c24;
         border: 1px solid #f5c6cb;
     }
-    
+
     @keyframes slideDown {
         from {
             opacity: 0;
             transform: translateY(-20px);
         }
+
         to {
             opacity: 1;
             transform: translateY(0);
@@ -39,7 +40,7 @@
     .movie-detail-container {
         background: white;
         border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         overflow: hidden;
         margin: 20px 0;
     }
@@ -61,7 +62,7 @@
         width: 100%;
         max-width: 400px;
         border-radius: 8px;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
         transition: transform 0.3s ease;
     }
 
@@ -138,7 +139,7 @@
 
     .btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
     .btn-info {
@@ -240,12 +241,27 @@
 
 <div class="movie-detail-container">
     <div class="row">
-        <div class="col-sm-4 poster-column">
-            <img src="{{ asset('storage/' . $movies->poster) }}" alt="{{ $movies->title }}">
+        <!--Si hay iamgen -->
+        @if($movies->poster)
+        <!-- Si es con URL externa -->
+        @if(filter_var($movies->poster, FILTER_VALIDATE_URL))
+
+        <img src="{{ $movies->poster }}" alt="{{ $movies->title }}" class="movie-poster" width="33%"/>
+        @else
+        <!-- Si es con Ruta local -->
+        <img src="{{ asset('storage/' . $movies->poster) }}" alt="{{ $movies->title }}" class="movie-poster" width="33%" />
+        @endif
+        @else
+        <div class="no-image-placeholder">
+            <div class="no-image-icon">
+                <i class="fas fa-film"></i>
+            </div>
+            <div class="no-image-text">No Image</div>
         </div>
+        @endif
         <div class="col-sm-8 info-column">
             <h3>{{ $movies->title }}</h3>
-            
+
             <p><strong>Año:</strong> {{ $movies->year }}</p>
             <p><strong>Director:</strong> {{ $movies->director }}</p>
 
