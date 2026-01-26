@@ -80,7 +80,7 @@ class UserController extends Controller
 
             $pelicula = videoclub_dos::findOrFail($id_peli);
 
-            //Actualiza la pelicula añadiendo el usaurio
+            //Añade dentro de id_usuario en pelicula, el usuario que la a alquilado
             $pelicula->update([
                 'id_usuario' => $user->id,
                 'rented' => true
@@ -102,20 +102,36 @@ class UserController extends Controller
 
     //Devuelve la pelicula y cambia los campos a nulos
     function devolverPelicula($id_peli)
-    {
-        try {
+{
+    try {
+        $pelicula = videoclub_dos::findOrFail($id_peli);
+        
+        // Obtener el usuario que tiene alquilada la película
+        $usuario = User::find($pelicula->id_usuario);
+        
+        // Actualizar la película
+        $pelicula->update([
+            'id_usuario' => null,
+            'rented' => false
+        ]);
 
-            $pelicula = videoclub_dos::findOrFail($id_peli);
-            $pelicula->update([
-                'id_usuario' => null,
-                'rented' => false
-            ]);
-
-            $pelicula->save();
-            return redirect("/movie/show/$pelicula->id")->with('success', 'Película devuelta correctamente!');
-        } catch (Exception) {
-            return redirect()->back() //Devuelve a la página anterior
-                ->with('error', 'Error al devolver la película'); //Se envía con un mensaje de error
+        // Eliminar la película del array RentedMovies del usuario
+        if ($usuario) {
+            $peliculasAlquiladas = $usuario->RentedMovies ?? [];
+            
+            // Filtrar para eliminar solo esta película del array
+            $peliculasAlquiladas = array_filter($peliculasAlquiladas, function($peliId) use ($id_peli) {
+                return $peliId != $id_peli;
+            });
+            
+            $usuario->RentedMovies = $peliculasAlquiladas;
+            $usuario->save();
         }
+
+        return redirect("/movie/show/$pelicula->id")->with('success', 'Película devuelta correctamente!');
+    } catch (Exception) {
+        return redirect()->back()
+            ->with('error', 'Error al devolver la película');
     }
+}
 }

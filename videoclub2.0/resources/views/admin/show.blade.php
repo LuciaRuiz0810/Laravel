@@ -279,7 +279,7 @@
             </p>
 
             <div class="action-buttons">
-                @if ($movies->rented && $movies->id_usuario !== Auth::id())
+                @if ($movies->rented && $movies->id_usuario !== Auth::id()) <!--SOLO APARECERÁ SI EL USUARIO LOGUEADO NO COINCIDE CON EL DE ID GUARDADO EN LA PELÍCULA-->
                 <button class="btn btn-secondary" disabled>No disponible</button>
 
                 @elseif ($movies->rented && $movies->id_usuario == Auth::id())
@@ -296,8 +296,10 @@
                 </form>
                 @endif
 
+    {{--Para comentar y que no se ejecute--}}
+    
                 @auth
-                @if(auth()->user()->role)
+                @if(auth()->user()->role) <!--SOLO APARECERÁ SI EL USUARIO ES ADMIN-->
                 <a href="{{ url('/edit/movie/' . $movies->id) }}" class="btn btn-warning">Editar Película</a>
 
                 <form action="{{ url('/delete/movie/' . $movies->id) }}" method="POST" style="display:inline">

@@ -405,12 +405,12 @@
             flex-direction: column;
             align-items: stretch;
         }
-        
+
         .actions {
             flex-direction: column;
             gap: 5px;
         }
-        
+
         .action-btn {
             width: 100%;
             justify-content: center;
@@ -534,12 +534,12 @@
                             Ver
                         </a>
                         -->
-                        
+
                         <a href="{{ url('/edit/user/' . $user->id) }}" class="action-btn action-btn-edit" title="Editar">
                             <i class="fas fa-edit"></i>
                             Editar
                         </a>
-                        
+
                         <form action="{{ url('/delete/user/' . $user->id) }}" method="POST" class="inline-form">
                             @csrf
                             @method('DELETE')
@@ -558,20 +558,18 @@
 </div>
 
 <script>
-    // Búsqueda en tiempo real
-    document.getElementById('search-input').addEventListener('keyup', function() {
+    //Búsqueda en tiempo real GENÉRICA
+
+    const id_input = 'search-input'; // ID de tu input
+    const clase_tabla = '.users-table'; // Selector de tu tabla
+
+    document.getElementById(id_input)?.addEventListener('keyup', function() {
         const searchTerm = this.value.toLowerCase();
-        const rows = document.querySelectorAll('.users-table tbody tr');
+        const rows = document.querySelectorAll(`${clase_tabla} tbody tr`);
 
         rows.forEach(row => {
-            const name = row.querySelector('.user-name').textContent.toLowerCase();
-            const email = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-
-            if (name.includes(searchTerm) || email.includes(searchTerm)) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
+            const textContent = row.textContent.toLowerCase();
+            row.style.display = textContent.includes(searchTerm) ? '' : 'none';
         });
     });
 
