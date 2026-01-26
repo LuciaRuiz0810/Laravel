@@ -13,9 +13,35 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
         @csrf
         @method('patch')
+
+        <div>
+            <x-input-label for="profile_image" :value="__('Foto de Perfil')" />
+            <div class="mt-2 flex items-center gap-4">
+                @if($user->profile_image)
+                    <div class="relative inline-block">
+                        <img src="{{ asset('storage/' . $user->profile_image) }}" alt="Profile Image" class="h-24 w-24 rounded-full object-cover border-2 border-indigo-500 shadow-sm">
+                        <button type="button" onclick="document.getElementById('delete-image-form').submit()" class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full p-1 hover:bg-red-700 transition shadow-sm" title="Eliminar foto">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                @else
+                    <div class="h-24 w-24 rounded-full bg-gray-100 flex items-center justify-center border-2 border-dashed border-gray-300">
+                        <span class="text-4xl">👤</span>
+                    </div>
+                @endif
+
+                <div class="flex-1">
+                    <input type="file" id="profile_image" name="profile_image" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 transition" accept="image/*" />
+                    <p class="mt-1 text-xs text-gray-500">JPGE, PNG o GIF. Máx. 2MB.</p>
+                </div>
+            </div>
+            <x-input-error class="mt-2" :messages="$errors->get('profile_image')" />
+        </div>
 
         <div>
             <x-input-label for="name" :value="__('Name')" />
@@ -59,6 +85,22 @@
                     class="text-sm text-gray-600"
                 >{{ __('Saved.') }}</p>
             @endif
+
+            @if (session('status') === 'profile-image-deleted')
+                <p
+                    x-data="{ show: true }"
+                    x-show="show"
+                    x-transition
+                    x-init="setTimeout(() => show = false, 2000)"
+                    class="text-sm text-red-600"
+                >{{ __('Foto eliminada.') }}</p>
+            @endif
         </div>
+    </form>
+
+    <!-- Hidden form for deleting image -->
+    <form id="delete-image-form" method="POST" action="{{ route('profile.image.delete') }}" class="hidden">
+        @csrf
+        @method('DELETE')
     </form>
 </section>

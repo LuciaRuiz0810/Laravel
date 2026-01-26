@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
+use Illuminate\Support\Facades\Storage;
+
 class ProfileController extends Controller
 {
     /**
@@ -26,15 +28,44 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        $user->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
         }
 
-        $request->user()->save();
+        // Subida de imagen de perfil (siguiendo la estructura de MoviesController)
+        if ($request->hasFile('profile_image')) {
+            // Eliminar imagen anterior si existe
+            if ($user->profile_image) {
+                Storage::disk('public')->delete($user->profile_image);
+            }
+
+            // Guardar nueva imagen
+            $imagePath = $request->file('profile_image')->store('profile_images', 'public');
+            $user->profile_image = $imagePath;
+        }
+
+        $user->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    }
+
+    /**
+     * Delete the user's profile image.
+     */
+    public function deleteProfileImage(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+
+        if ($user->profile_image) {
+            Storage::disk('public')->delete($user->profile_image);
+            $user->profile_image = null;
+            $user->save();
+        }
+
+        return Redirect::route('profile.edit')->with('status', 'profile-image-deleted');
     }
 
     /**

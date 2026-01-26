@@ -16,9 +16,9 @@ Route::middleware('auth')->group(function () { //Grupo de rutas a las que puede 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::delete('/profile/image', [ProfileController::class, 'deleteProfileImage'])->name('profile.image.delete');
 
-    Route::redirect('', '/login'); //Redirige de /dashboard a /index
-    Route::redirect('/dashboard', '/index'); //Redirige de /dashboard a /index
+    Route::redirect('', '/index'); //Redirige de / a /index
     Route::get('/index', [MoviesController::class, 'getIndex']);
 
     Route::get('/movie/show/{id}', [MoviesController::class, 'showMovie']);

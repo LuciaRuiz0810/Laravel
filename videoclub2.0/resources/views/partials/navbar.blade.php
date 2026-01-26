@@ -171,14 +171,35 @@
             </ul>
 
             <ul class="navbar-nav navbar-right">
-                <li class="nav-item">
-                    <form action="{{ url('/logout') }}" method="POST" style="display:inline">
-                        {{ csrf_field() }}
-                        <button type="submit" class="btn btn-link nav-link" style="display:inline;cursor:pointer">
-                            Cerrar sesión
-                        </button>
-                    </form>
+                @auth
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        @if(Auth::user()->profile_image)
+                            <img src="{{ asset('storage/' . Auth::user()->profile_image) }}" alt="Avatar" class="rounded-circle mr-1" style="width: 30px; height: 30px; object-fit: cover;">
+                        @else
+                            <span>👤</span>
+                        @endif
+                        {{ Auth::user()->name }}
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" style="background-color: #34495e; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+                        @if(Request::is('profile'))
+                        <a class="dropdown-item" href="{{ url('/index') }}" style="color: white; padding: 10px 20px;">
+                            <span class="glyphicon glyphicon-home"></span> Volver al catálogo
+                        </a>
+                        @endif
+                        <a class="dropdown-item" href="{{ url('/profile') }}" style="color: white; padding: 10px 20px;">
+                            <span class="glyphicon glyphicon-user"></span> Mi Perfil
+                        </a>
+                        <div class="dropdown-divider" style="border-top: 1px solid rgba(255,255,255,0.1);"></div>
+                        <form action="{{ url('/logout') }}" method="POST" style="margin: 0;">
+                            @csrf
+                            <button type="submit" class="dropdown-item" style="color: #e74c3c; font-weight: 600; padding: 10px 20px; background: none; border: none; width: 100%; text-align: left; cursor: pointer;">
+                                <span class="glyphicon glyphicon-log-out"></span> Cerrar sesión
+                            </button>
+                        </form>
+                    </div>
                 </li>
+                @endauth
             </ul>
         </div>
     </div>
