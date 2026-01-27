@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Models;
 use App\Models\Movie;
+use App\Models\User;
 use App\Models\videoclub_dos;
 use Illuminate\Http\Request;
 use Exception;
@@ -104,7 +105,7 @@ class MoviesController extends Controller
             'title' => 'required|string|max:255',
             'year' => 'required|integer|min:1900|max:' . date('Y'),
             'director' => 'required|string|max:255',
-            'poster' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
+            'poster' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'synopsis' => 'nullable|string',
             'rented' => 'nullable|boolean'
         ], [
@@ -161,5 +162,22 @@ class MoviesController extends Controller
             return redirect()->back() //Devuelve a la página anterior
                 ->with('error', 'Error al eliminar la Pelicula'); //Se envía con un mensaje de error
         }
+    }
+
+
+
+    function showAlquiladas($id)
+    {
+        $user = User::findOrFail($id);
+
+        $peliculasAlquiladas = videoclub_dos::whereIn('id', $user->RentedMovies ?? [])->get(); //Recoges toda la información de esas peliculas en ese user
+
+        // DEPURACIÓN - Esto mostrará los datos ANTES de la vista
+        //dd($peliculasAlquiladas->toArray());
+
+        return view('user.alquiladas', [
+            'user' => $user,
+            'peliculas' => $peliculasAlquiladas
+        ]);
     }
 }

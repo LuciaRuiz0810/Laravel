@@ -506,7 +506,7 @@
                             {{ strtoupper(substr($user->name, 0, 2)) }}
                         </div>
                         <div class="user-info">
-                            <span class="user-name">{{ $user->name }}</span>
+                            <a href="{{ url('/alquiladas/user/' . $user->id)}}"><span class="user-name">{{ $user->name }}</span></a>
                             <span class="user-id">ID: {{ $user->id }}</span>
                         </div>
                     </div>

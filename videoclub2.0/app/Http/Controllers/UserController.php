@@ -13,9 +13,10 @@ class UserController extends Controller
     //Lista todos los usuarios de la bbdd
     function listadoUsers()
     {
-
         $users = User::all();
         return view('admin.user', compact('users'));
+
+        //Ej varios compact return view('user.edit', compact('user', 'profile', 'settings', 'roles'));
     }
 
     //Formulario para editar al user
@@ -75,7 +76,7 @@ class UserController extends Controller
     function alquilarPelicula($id_peli, Request $request)
     {
         try {
-            $user = $request->user();
+            $user = $request->user(); //Obtiene el usuario
             $user->refresh();
 
             $pelicula = videoclub_dos::findOrFail($id_peli);
@@ -87,7 +88,7 @@ class UserController extends Controller
             ]);
 
             //Se añade el id de la pelicula al array de usuarios RentedMovies
-            $peliculas = $user->RentedMovies ?? [];
+            $peliculas = $user->RentedMovies ?? null;
             $peliculas[] = $pelicula->id;
             $user->RentedMovies = $peliculas;
             $user->save();
@@ -102,36 +103,36 @@ class UserController extends Controller
 
     //Devuelve la pelicula y cambia los campos a nulos
     function devolverPelicula($id_peli)
-{
-    try {
-        $pelicula = videoclub_dos::findOrFail($id_peli);
-        
-        // Obtener el usuario que tiene alquilada la película
-        $usuario = User::find($pelicula->id_usuario);
-        
-        // Actualizar la película
-        $pelicula->update([
-            'id_usuario' => null,
-            'rented' => false
-        ]);
+    {
+        try {
+            $pelicula = videoclub_dos::findOrFail($id_peli);
 
-        // Eliminar la película del array RentedMovies del usuario
-        if ($usuario) {
-            $peliculasAlquiladas = $usuario->RentedMovies ?? [];
-            
-            // Filtrar para eliminar solo esta película del array
-            $peliculasAlquiladas = array_filter($peliculasAlquiladas, function($peliId) use ($id_peli) {
-                return $peliId != $id_peli;
-            });
-            
-            $usuario->RentedMovies = $peliculasAlquiladas;
-            $usuario->save();
+            // Obtener el usuario que tiene alquilada la película
+            $usuario = User::find($pelicula->id_usuario);
+
+            // Actualizar la película
+            $pelicula->update([
+                'id_usuario' => null,
+                'rented' => false
+            ]);
+
+            // Eliminar la película del array RentedMovies del usuario
+            if ($usuario) {
+                $peliculasAlquiladas = $usuario->RentedMovies ?? null;
+
+                //Filtrar para eliminar solo esta película del array
+                $peliculasAlquiladas = array_filter($peliculasAlquiladas, function ($peliId) use ($id_peli) {
+                    return $peliId != $id_peli;
+                });
+
+                $usuario->RentedMovies = $peliculasAlquiladas;
+                $usuario->save();
+            }
+
+            return redirect("/movie/show/$pelicula->id")->with('success', 'Película devuelta correctamente!');
+        } catch (Exception) {
+            return redirect()->back()
+                ->with('error', 'Error al devolver la película');
         }
-
-        return redirect("/movie/show/$pelicula->id")->with('success', 'Película devuelta correctamente!');
-    } catch (Exception) {
-        return redirect()->back()
-            ->with('error', 'Error al devolver la película');
     }
-}
 }

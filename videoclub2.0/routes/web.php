@@ -8,8 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\Admin;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DirectorController;
-
-
+use App\Models\videoclub_dos;
 
 Route::middleware('auth')->group(function () { //Grupo de rutas a las que puede acceder el admin y usuarios normales
 
@@ -36,11 +35,15 @@ Route::middleware('auth')->group(function () { //Grupo de rutas a las que puede 
 
         Route::delete('/delete/movie/{id}', [MoviesController::class, 'delete']);
 
+        Route::get('/alquiladas/user/{id}', [MoviesController::class, 'showAlquiladas']);
+
+
         Route::get('/user', [UserController::class, 'listadoUsers']);
 
 
         Route::get('/edit/user/{id}', [UserController::class, 'editUserForm']);
         Route::put('/edit/user/{id}/new', [UserController::class, 'editUser']);
+
 
         Route::delete('/delete/user/{id}', [UserController::class, 'delete']);
 
